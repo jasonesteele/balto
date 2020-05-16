@@ -3,9 +3,10 @@ import './App.css';
 import Routes from './routes'
 import {withStyles} from "@material-ui/core/styles";
 import NavBar from "./components/NavBar";
-import {createStore} from "redux";
+import {compose, createStore} from "redux";
 import {Provider} from "react-redux";
 import rootReducer from './reducers'
+import persistState from 'redux-localstorage'
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
@@ -16,7 +17,11 @@ const styles = theme => {
   });
 };
 
-const store = createStore(rootReducer);
+const enhancer = compose(
+    /* [middlewares], */
+    persistState(/*paths, config*/),
+)
+const store = createStore(rootReducer, enhancer);
 
 const App = (props) => {
   const {classes} = props;
