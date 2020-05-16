@@ -30,9 +30,9 @@ const ScriptLibrary = ({ scripts }) => (
             {scripts && scripts.length > 0 ? (
                 <div>
                   <Grid container style={{padding: 12}}>
-                    {scripts.map(currentScript => (
+                    {scripts.map((currentScript, index) => (
                         <Grid key={currentScript.title} item xs={12} sm={6} lg={4} xl={3} style={{padding: 10}}>
-                          <ScriptCard script={currentScript}/>
+                          <ScriptCard script={currentScript} index={index}/>
                         </Grid>
                     ))}
                   </Grid>

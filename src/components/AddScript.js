@@ -48,6 +48,9 @@ function extractToken(context) {
 }
 
 function parseMushi(mushi) {
+  if (!mushi || mushi.trim().length === 0) {
+    return true;
+  }
   var trimmedMushi = mushi.replace(/\s*/g, '');
   var parsedString = "";
   var context = {

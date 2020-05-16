@@ -10,20 +10,23 @@ import {connect} from "react-redux";
 import {deleteScript} from "../actions/UserActions";
 
 
-class ScriptCard extends Component  {
+class ScriptCard extends Component {
   constructor(props) {
     super(props);
-    this.state = { shadow: 1 }
+    this.state = {shadow: 1}
   }
 
-  onMouseOver = () => this.setState({ shadow: 10})
-  onMouseOut = () => this.setState({ shadow: 1})
-  onDelete = () => this.props.dispatch(deleteScript(this.props.script))
+  onMouseOver = () => this.setState({shadow: 10})
+  onMouseOut = () => this.setState({shadow: 1})
+  onDelete = () => {
+    if (window.confirm('Are you sure you wish to delete ' + this.props.script.title + '?'))
+      this.props.dispatch(deleteScript(this.props.script, this.props.index))
+  }
 
   render() {
     return (
         <div>
-          { this.props.script ? (
+          {this.props.script ? (
               <Card elevation={this.state.shadow} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
                 <CardContent>
                   <Grid container justify="space-between">

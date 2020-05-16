@@ -15,7 +15,7 @@ function rootReducer(state = initialState, action) {
     case DELETE_SCRIPT:
       return {
         ...state,
-        scripts: state.scripts.filter(it => it !== action.script)
+        scripts: state.scripts.filter((it, index) => index !== action.index)
       }
   }
   return state;
