@@ -6,6 +6,8 @@ import IconButton from "@material-ui/core/IconButton";
 import {ArrowBack, Save} from "@material-ui/icons";
 import TextField from "@material-ui/core/TextField";
 import * as yup from "yup";
+import {connect} from "react-redux";
+import {addScript} from "../actions/UserActions";
 
 function extractToken(context) {
   context.depth++;
@@ -26,7 +28,7 @@ function extractToken(context) {
       token = "" + extractToken(context);
       var nextToken;
       if (context.mushi.charAt(context.pos) !== ':') {
-        var end = context.mushi.indexOf(':', context.pos + 1);
+        end = context.mushi.indexOf(':', context.pos + 1);
         if (end < 0) {
           throw new Error("Malformed MushiString");
         }
@@ -45,11 +47,61 @@ function extractToken(context) {
   return token;
 }
 
-class AddScript extends Component {
-  constructor(props) {
-    super(props);
+function parseMushi(mushi) {
+  var trimmedMushi = mushi.replace(/\s*/g, '');
+  var parsedString = "";
+  var context = {
+    mushi: trimmedMushi,
+    pos: 0,
+    depth: 0
   }
+  var token = extractToken(context);
+  while (token) {
+    parsedString += token;
+    token = extractToken(context);
+  }
+  parsedString = parsedString.replace(/:-1:/g, '\n');
+  var nodeStrings = parsedString.split(/--end--/);
+  var nodes = nodeStrings.map(it => {
+    var lineMap = new Map();
+    it.trim().split(/\n/).forEach( line => {
+      var idx = line.indexOf('=');
+      var key = line.substring(0, idx);
+      var value = line.substring(idx + 1);
+      if (value && value.length > 0) {
+        lineMap.set(key, value);
+      } else {
+        lineMap.set(key, null);
+      }
+    });
 
+    if (!lineMap.has('_0')) throw new Error("Malformed MushiString");
+    if (!lineMap.has('_1')) throw new Error("Malformed MushiString");
+    if (!lineMap.has('_2')) throw new Error("Malformed MushiString");
+
+    var position = lineMap.get('_2').trim().split(/,/);
+    var links = lineMap.get('_3') ?
+        lineMap.get('_3').trim().split(/,/).map(it => parseInt(it)) :
+        []
+    var altLinks = lineMap.get('_4') ?
+        lineMap.get('_4').trim().split(/,/).map(it => parseInt(it)) :
+        [];
+
+    return {
+      'id': parseInt(lineMap.get('_0')),
+      'type': lineMap.get('_1'),
+      'position': { x: parseInt(position[0]), y: parseInt(position[1]) },
+      'links': links,
+      'altLinks': altLinks,
+      'arg1': lineMap.get('_5'),
+      'arg2': lineMap.get('_6'),
+      'arg3': lineMap.get('_7')
+    }
+  });
+  return nodes;
+}
+
+class AddScript extends Component {
   schema = yup.object({
     title: yup.string()
         .min(3, "Must be at least 3 characters")
@@ -71,62 +123,25 @@ class AddScript extends Component {
   };
 
   onSubmit = (values, {setSubmitting}) => {
-    console.log("submitting..");
+    values.mushi = parseMushi(values.mushi);
     setTimeout(() => {
+      console.log("submitting..");
       setSubmitting(false);
-      alert(JSON.stringify(values, null, 2));
+      this.props.dispatch(addScript(values));
+      this.props.history.push('/');
     }, 500);
   }
 
   validateMushi(mushi) {
-    var trimmedMushi = mushi.replace(/\s*/g, '');
-    var parsedString = "";
-    var context = {
-      mushi: trimmedMushi,
-      pos: 0,
-      depth: 0
-    }
-    var token = extractToken(context);
-    while (token) {
-      parsedString += token;
-      token = extractToken(context);
-    }
-    parsedString = parsedString.replace(/:-1:/g, '\n');
-    var nodeStrings = parsedString.split(/--end--/);
-    var nodes = nodeStrings.map(it => {
-      var lineMap = new Map();
-      it.trim().split(/\n/).forEach( line => {
-        var idx = line.indexOf('=');
-        lineMap.set(line.substring(0, idx), line.substring(idx + 1));
-      });
-
-      if (!lineMap.has('_0')) throw new Error("Malformed MushiString");
-      if (!lineMap.has('_1')) throw new Error("Malformed MushiString");
-      if (!lineMap.has('_2')) throw new Error("Malformed MushiString");
-
-      var position = lineMap.get('_2').split(/,/);
-      var links = lineMap.get('_3').split(/,/);
-      var altLinks = lineMap.get('_4').split(/,/);
-
-      return {
-        'id': parseInt(lineMap.get('_0')),
-        'type': lineMap.get('_1'),
-        'position': { x: parseInt(position[0]), y: parseInt(position[1]) },
-        'links': links.map(it => parseInt(it)),
-        'altLinks': altLinks.map(it => parseInt(it)),
-        'arg1': lineMap.get('_5'),
-        'arg2': lineMap.get('_6'),
-        'arg3': lineMap.get('_7')
-      }
-    });
-
-    console.log("nodes:", nodes);
+    return parseMushi(mushi);
   }
 
   render() {
     return (
         <Container>
           <Formik
+              validateOnChange={false}
+              validateOnBlur={true}
               initialValues={this.initialValues}
               validationSchema={this.schema}
               onSubmit={this.onSubmit}
@@ -218,6 +233,5 @@ class AddScript extends Component {
     )
   }
 }
-
-export default AddScript;
+export default connect()(AddScript);
 

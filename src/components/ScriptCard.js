@@ -6,6 +6,8 @@ import IconButton from "@material-ui/core/IconButton";
 import {Delete, Edit, PlayCircleOutline} from "@material-ui/icons";
 import Card from "@material-ui/core/Card";
 import './ScriptCard.css';
+import {connect} from "react-redux";
+import {deleteScript} from "../actions/UserActions";
 
 
 class ScriptCard extends Component  {
@@ -16,6 +18,7 @@ class ScriptCard extends Component  {
 
   onMouseOver = () => this.setState({ shadow: 10})
   onMouseOut = () => this.setState({ shadow: 1})
+  onDelete = () => this.props.dispatch(deleteScript(this.props.script))
 
   render() {
     return (
@@ -48,7 +51,7 @@ class ScriptCard extends Component  {
                   <IconButton aria-label="edit the script">
                     <Edit/>
                   </IconButton>
-                  <IconButton aria-label="delete the script">
+                  <IconButton aria-label="delete the script" onClick={this.onDelete}>
                     <Delete/>
                   </IconButton>
                 </div>
@@ -59,4 +62,4 @@ class ScriptCard extends Component  {
   }
 }
 
-export default ScriptCard;
+export default connect()(ScriptCard);

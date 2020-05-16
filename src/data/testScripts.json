@@ -3,7 +3,7 @@
     "title": "Bunny Hop",
     "author": "Vexa",
     "description": "A freakin' adorable bunny quest",
-    "nodes": [
+    "mushi": [
       {
         "id": 0,
         "type": "OriginNode",
@@ -51,7 +51,7 @@
     "title": "Test Script",
     "author": "Shaza",
     "description": "A script for testing Balto",
-    "nodes": [
+    "mushi": [
       {
         "id": 0,
         "type": "OriginNode",

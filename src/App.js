@@ -3,6 +3,9 @@ import './App.css';
 import Routes from './routes'
 import {withStyles} from "@material-ui/core/styles";
 import NavBar from "./components/NavBar";
+import {createStore} from "redux";
+import {Provider} from "react-redux";
+import rootReducer from './reducers'
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
@@ -13,14 +16,18 @@ const styles = theme => {
   });
 };
 
+const store = createStore(rootReducer);
+
 const App = (props) => {
   const {classes} = props;
 
   return (
       <div>
-        <NavBar/>
-        <div className={classes.toolbar}/>
-        <Routes/>
+        <Provider store={store}>
+          <NavBar/>
+          <div className={classes.toolbar}/>
+          <Routes/>
+        </Provider>
       </div>
   );
 }
