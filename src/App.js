@@ -1,26 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Routes from './routes'
+import {withStyles} from "@material-ui/core/styles";
+import NavBar from "./components/NavBar";
 
-function App() {
+window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
+
+const styles = theme => {
+  return ({
+    // Load app bar information from the theme
+    toolbar: theme.mixins.toolbar
+  });
+};
+
+const App = (props) => {
+  const {classes} = props;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+        <NavBar/>
+        <div className={classes.toolbar}/>
+        <Routes/>
+      </div>
   );
 }
 
-export default App;
+export default withStyles(styles)(App);
+
