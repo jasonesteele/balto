@@ -128,10 +128,9 @@ class AddScript extends Component {
   onSubmit = (values, {setSubmitting}) => {
     values.mushi = parseMushi(values.mushi);
     setTimeout(() => {
-      console.log("submitting..");
-      setSubmitting(false);
       this.props.dispatch(addScript(values));
       this.props.history.push('/');
+      setSubmitting(false);
     }, 500);
   }
 

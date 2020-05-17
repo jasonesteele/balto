@@ -8,7 +8,30 @@ import {Add} from "@material-ui/icons";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 
-const ScriptLibrary = ({ scripts }) => (
+class ScriptLibrary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filter: ''
+    }
+    this.onSearchInputChange = this.onSearchInputChange.bind(this);
+
+  }
+
+  onSearchInputChange(event) {
+    console.log('search input changed', event);
+    this.setState({filter: event.target.value});
+  }
+
+  filterScript(script) {
+    return this.state.filter &&
+        !script.title.toLowerCase().includes(this.state.filter.toLowerCase()) &&
+        (!script.author || script.author.trim().length === 0 || !script.author.toLowerCase().includes(this.state.filter.toLowerCase())) &&
+        (!script.description || script.description.trim().length === 0 || !script.description.toLowerCase().includes(this.state.filter.toLowerCase()));
+  }
+
+  render() {
+    return (
         <div>
           <div>
             <Grid justify="space-between" container>
@@ -17,7 +40,7 @@ const ScriptLibrary = ({ scripts }) => (
                            id="searchInput"
                            placeholder="Search"
                            margin="normal"
-                    // onChange={this.onSearchInputChange}
+                           onChange={this.onSearchInputChange}
                 />
               </Grid>
               <Grid item align="right">
@@ -27,28 +50,34 @@ const ScriptLibrary = ({ scripts }) => (
               </Grid>
             </Grid>
 
-            {scripts && scripts.length > 0 ? (
-                <div>
-                  <Grid container style={{padding: 12}}>
-                    {scripts.map((currentScript, index) => (
-                        <Grid key={currentScript.title} item xs={12} sm={6} lg={4} xl={3} style={{padding: 10}}>
-                          <ScriptCard script={currentScript} index={index}/>
-                        </Grid>
-                    ))}
-                  </Grid>
-                </div>
-            ) : (
-                <div style={{padding: 24}}>
-                  <Typography color="textSecondary" variant="caption" display="block" gutterBottom>
-                    No scripts loaded
-                  </Typography>
-                </div>
-            )
+            {
+              this.props.scripts && this.props.scripts.length > 0 ? (
+                  <div>
+                    <Grid container style={{padding: 12}}>
+                      {this.props.scripts.map((currentScript, index) => (
+                          <Grid hidden={this.filterScript(currentScript)}
+                                key={currentScript.title}
+                                item xs={12} sm={6} lg={4} xl={3}
+                                style={{padding: 10}}>
+                            <ScriptCard script={currentScript} index={index}/>
+                          </Grid>
+                      ))}
+                    </Grid>
+                  </div>
+              ) : (
+                  <div style={{padding: 24}}>
+                    <Typography color="textSecondary" variant="caption" display="block" gutterBottom>
+                      No scripts loaded
+                    </Typography>
+                  </div>
+              )
             }
           </div>
         </div>
     );
+  }
+}
 
-const mapStateToProps = state => ({ scripts: state.scripts })
+const mapStateToProps = state => ({scripts: state.scripts})
 
 export default connect(mapStateToProps)(ScriptLibrary)
