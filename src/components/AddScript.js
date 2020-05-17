@@ -8,6 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import * as yup from "yup";
 import {connect} from "react-redux";
 import {addScript} from "../actions/UserActions";
+import { v4 as uuidv4 } from 'uuid';
 
 function extractToken(context) {
   context.depth++;
@@ -120,6 +121,7 @@ class AddScript extends Component {
         .test('invalid-mushi', 'Not a valid MushiString', async (value) => await this.validateMushi(value))
   });
   initialValues = {
+    id: null,
     title: '',
     author: '',
     description: '',
@@ -127,6 +129,7 @@ class AddScript extends Component {
   };
 
   onSubmit = (values, {setSubmitting}) => {
+    values.id = uuidv4();
     values.mushi = parseMushi(values.mushi);
     setTimeout(() => {
       this.props.dispatch(addScript(values));

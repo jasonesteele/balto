@@ -1,4 +1,4 @@
-import testScripts from './data/testScripts.json';
+import testScripts from './data/defaultScripts.json';
 import {ADD_SCRIPT, DELETE_SCRIPT} from "./constants/actionTypes";
 
 var initialState = {

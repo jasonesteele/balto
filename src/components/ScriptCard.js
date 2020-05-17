@@ -3,12 +3,13 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
-import {Delete, Edit, FileCopy, PlayCircleOutline} from "@material-ui/icons";
+import {Add, Delete, Edit, FileCopy, PlayCircleOutline} from "@material-ui/icons";
 import Card from "@material-ui/core/Card";
 import './ScriptCard.css';
 import {connect} from "react-redux";
 import {deleteScript} from "../actions/UserActions";
 import {openSnackbar} from "./Notifier";
+import {Link} from "react-router-dom";
 
 function serializeMushi(script) {
   var stringToEncode = script.mushi
@@ -88,7 +89,7 @@ class ScriptCard extends Component {
                     <PlayCircleOutline/>
                   </IconButton>
                   <IconButton aria-label="edit the script">
-                    <Edit/>
+                    <Link to={"/edit/" + this.props.script.id}><Edit/></Link>
                   </IconButton>
                   <IconButton aria-label="export the script" onClick={this.onCopyToClipboard}>
                     <FileCopy/>

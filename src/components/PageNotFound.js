@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
+import Alert from "@material-ui/lab/Alert";
+import Container from "@material-ui/core/Container";
 
 class PageNotFound extends Component {
   render() {
     return (
-        <div>Page not found</div>
+        <Container>
+          <Alert severity="error">Page not found!</Alert>
+        </Container>
     )
   }
 }
