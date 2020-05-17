@@ -49,7 +49,7 @@ function extractToken(context) {
 
 function parseMushi(mushi) {
   if (!mushi || mushi.trim().length === 0) {
-    return true;
+    return null;
   }
   var trimmedMushi = mushi.replace(/\s*/g, '');
   var parsedString = "";
@@ -116,7 +116,7 @@ class AddScript extends Component {
     mushi: yup.string()
         .matches(/^[\s]*:96::::54:3::58:::62::::[:\s0-9]*$/,
             {message: "Not a valid MushiString", excludeEmptyString: true})
-        .test(this.validateMushi)
+        .test('invalid-mushi', 'Not a valid MushiString', async (value) => await this.validateMushi(value))
   });
   initialValues = {
     title: '',
@@ -135,7 +135,12 @@ class AddScript extends Component {
   }
 
   validateMushi(mushi) {
-    return parseMushi(mushi);
+    try {
+      parseMushi(mushi);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   render() {
