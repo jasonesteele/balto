@@ -19,7 +19,6 @@ class ScriptLibrary extends Component {
   }
 
   onSearchInputChange(event) {
-    console.log('search input changed', event);
     this.setState({filter: event.target.value});
   }
 

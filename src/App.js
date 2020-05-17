@@ -7,6 +7,7 @@ import {compose, createStore} from "redux";
 import {Provider} from "react-redux";
 import rootReducer from './reducers'
 import persistState from 'redux-localstorage'
+import Notifier from "./components/Notifier";
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
@@ -32,6 +33,7 @@ const App = (props) => {
           <NavBar/>
           <div className={classes.toolbar}/>
           <Routes/>
+          <Notifier/>
         </Provider>
       </div>
   );

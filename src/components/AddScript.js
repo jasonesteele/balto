@@ -98,7 +98,8 @@ function parseMushi(mushi) {
       'altLinks': altLinks,
       'arg1': lineMap.get('_5'),
       'arg2': lineMap.get('_6'),
-      'arg3': lineMap.get('_7')
+      'arg3': lineMap.get('_7'),
+      'arg4': lineMap.get('_8')
     }
   });
   return nodes;

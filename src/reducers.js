@@ -17,7 +17,8 @@ function rootReducer(state = initialState, action) {
         ...state,
         scripts: state.scripts.filter((it, index) => index !== action.index)
       }
+    default:
+      return state;
   }
-  return state;
 }
 export default rootReducer;
