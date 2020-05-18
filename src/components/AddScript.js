@@ -9,6 +9,7 @@ import * as yup from "yup";
 import {connect} from "react-redux";
 import {addScript} from "../actions/UserActions";
 import { v4 as uuidv4 } from 'uuid';
+import ReactGA from "react-ga";
 
 function extractToken(context) {
   context.depth++;
@@ -156,6 +157,10 @@ class AddScript extends Component {
       return false;
     }
     return true;
+  }
+
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   render() {

@@ -9,7 +9,7 @@ export default props => (
         <Switch>
           <Route exact path='/' component={ ScriptLibrary } />
           <Route exact path='/add' component={ AddScript } />
-          <Route path='/edit/:scriptId' component={ EditScript } />
+          <Route exact path='/edit/:scriptId' component={ EditScript } />
           <Route path='/' component={ PageNotFound } />
         </Switch>
 )

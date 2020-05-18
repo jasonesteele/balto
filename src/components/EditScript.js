@@ -13,6 +13,7 @@ import Link from "@material-ui/core/Link";
 import {LocationOn, Chat, Folder, SportsBasketball,
   HourglassFull, Mouse, Casino, Build, Help} from "@material-ui/icons";
 import './EditScript.css';
+import ReactGA from "react-ga";
 
 class NodeSummary extends Component {
   durationToStr(value) {
@@ -425,6 +426,7 @@ class EditScript extends Component {
   }
 
   componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
     const {match: {params}} = this.props;
     this.setState(() => {
       var script = this.props.scripts.find(it => it.id === params.scriptId)

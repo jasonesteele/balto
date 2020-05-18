@@ -24,7 +24,6 @@ ReactGA.initialize('G-9W7QMBCMCZ', {
     userId: uuid
   }
 });
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 const styles = theme => {
   return ({

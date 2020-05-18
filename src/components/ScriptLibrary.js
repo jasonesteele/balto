@@ -7,6 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import {Add} from "@material-ui/icons";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
+import ReactGA from "react-ga";
 
 class ScriptLibrary extends Component {
   constructor(props) {
@@ -27,6 +28,10 @@ class ScriptLibrary extends Component {
         !script.title.toLowerCase().includes(this.state.filter.toLowerCase()) &&
         (!script.author || script.author.trim().length === 0 || !script.author.toLowerCase().includes(this.state.filter.toLowerCase())) &&
         (!script.description || script.description.trim().length === 0 || !script.description.toLowerCase().includes(this.state.filter.toLowerCase()));
+  }
+
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   render() {
@@ -79,4 +84,4 @@ class ScriptLibrary extends Component {
 
 const mapStateToProps = state => ({scripts: state.scripts})
 
-export default connect(mapStateToProps)(ScriptLibrary)
+export default connect(mapStateToProps)(ScriptLibrary);
