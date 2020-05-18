@@ -8,8 +8,23 @@ import {Provider} from "react-redux";
 import rootReducer from './reducers'
 import persistState from 'redux-localstorage'
 import Notifier from "./components/Notifier";
+import ReactGA from 'react-ga';
+import { v4 as uuidv4 } from 'uuid';
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
+
+var uuid = localStorage.getItem('gaUuid');
+if (!uuid) {
+  uuid = uuidv4();
+  localStorage.setItem('gaUuid', uuid);
+}
+ReactGA.initialize('G-9W7QMBCMCZ', {
+  titleCase: false,
+  gaOptions: {
+    userId: uuid
+  }
+});
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 const styles = theme => {
   return ({
