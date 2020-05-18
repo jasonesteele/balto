@@ -3,19 +3,18 @@ import Alert from "@material-ui/lab/Alert";
 import * as yup from "yup";
 import {Form, Formik} from "formik";
 import IconButton from "@material-ui/core/IconButton";
-import {ArrowBack, Save} from "@material-ui/icons";
+import {ArrowBack, ArrowForward, Block, Check, Save} from "@material-ui/icons";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import MaterialTable from "material-table";
 import Container from "@material-ui/core/Container";
 import {connect} from "react-redux";
 import Link from "@material-ui/core/Link";
+import {LocationOn, Chat, Folder, SportsBasketball,
+  HourglassFull, Mouse, Casino, Build, Help} from "@material-ui/icons";
+import './EditScript.css';
 
 class NodeSummary extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   durationToStr(value) {
     var seconds = value % 60;
     var minutes = Math.floor(value / 60) % 60;
@@ -356,9 +355,6 @@ class NodeSummary extends Component {
 }
 
 class NodeLinks extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
         <div>
@@ -367,25 +363,44 @@ class NodeLinks extends Component {
               case 'ConditionNode':
                 return <span>
                   {this.props.node.prevLinks && this.props.node.prevLinks.length > 0 ?
-                      <div><i>prev: </i><Link href="#">{this.props.node.prevLinks.join(', ')}</Link></div> :
+                      <div><ArrowBack/> <Link href="#">{this.props.node.prevLinks.join(', ')}</Link></div> :
                       <span></span>}
-                  <div><i>true:</i> <Link href="#">{this.props.node.links.join(', ')}</Link></div>
-                  <div><i>false:</i> <Link href="#">{this.props.node.altLinks.join(', ')}</Link></div>
+                  <div><Check/> <Link href="#">{this.props.node.links.join(', ')}</Link></div>
+                  <div><Block/> <Link href="#">{this.props.node.altLinks.join(', ')}</Link></div>
                 </span>;
               default:
                 return <span>
                   {this.props.node.prevLinks && this.props.node.prevLinks.length > 0 ?
-                      <div><i>prev:</i> <Link href="#">{this.props.node.prevLinks.join(', ')}</Link></div> :
+                      <div><ArrowBack/> <Link href="#">{this.props.node.prevLinks.join(', ')}</Link></div> :
                       <span></span>}
                   {this.props.node.links && this.props.node.links.length > 0 ?
-                      <div><i>next:</i> <Link href="#">{this.props.node.links.join(', ')}</Link></div> :
+                      <div><ArrowForward/> <Link href="#">{this.props.node.links.join(', ')}</Link></div> :
                       <span></span>}
                 </span>;
             }
           })()}
         </div>
     )
-  }}
+  }
+}
+
+class NodeType extends Component {
+  render() {
+    switch (this.props.type) {
+      case 'OriginNode': return (<LocationOn/>);
+      case 'DialogueNode': return (<Chat/>);
+      case 'CommentNode': return (<Folder/>);
+      case 'BounceNode': return (<SportsBasketball/>);
+      case 'WaitNode': return (<HourglassFull/>);
+      case 'OptionNode': return (<Mouse/>);
+      case 'RandomiserNode': return (<Casino/>);
+      case 'ActionNode': return (<Build/>);
+      case 'ConditionNode': return (<Help/>);
+      default:
+        return (<div>{this.props.type}</div>);
+    }
+  }
+}
 
 class EditScript extends Component {
   schema = yup.object({
@@ -506,16 +521,16 @@ class EditScript extends Component {
                                       title: 'Id', field: 'id', width: '5%'
                                     },
                                     {
-                                      title: 'Type', field: 'type', width: '10%',
-                                      render: rowData => <span>{rowData.node.type.replace(/Node$/, '')}</span>
+                                      title: 'Type', field: 'type', width: '5%',
+                                      render: rowData => <NodeType type={rowData.type}/>
                                     },
                                     {
-                                      title: 'Summary', width: '65%',
-                                      render: rowData => <NodeSummary node={rowData.node}/>
-                                    },
-                                    {
-                                      title: 'Links', width: '20%',
+                                      title: 'Links', width: '5%',
                                       render: rowData => <NodeLinks node={rowData.node}/>
+                                    },
+                                    {
+                                      title: 'Summary', width: '85%',
+                                      render: rowData => <NodeSummary node={rowData.node}/>
                                     }
                                   ]}
                                   data={this.state.script.mushi.map(it => {
