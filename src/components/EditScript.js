@@ -411,8 +411,6 @@ class EditScript extends Component {
 
   componentDidMount() {
     const {match: {params}} = this.props;
-    console.log('script ID', params.scriptId);
-    console.log('state', this.state.scripts);
     this.setState(() => {
       var script = this.props.scripts.find(it => it.id === params.scriptId)
       return script ? {script: {...script}} : null;

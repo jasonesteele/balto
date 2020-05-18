@@ -70,12 +70,14 @@ function parseMushi(mushi) {
     var lineMap = new Map();
     it.trim().split(/\n/).forEach( line => {
       var idx = line.indexOf('=');
-      var key = line.substring(0, idx);
-      var value = line.substring(idx + 1);
-      if (value && value.length > 0) {
-        lineMap.set(key, value);
-      } else {
-        lineMap.set(key, null);
+      if (idx >= 0) {
+        var key = line.substring(0, idx);
+        var value = line.substring(idx + 1);
+        if (value && value.length > 0) {
+          lineMap.set(key, value);
+        } else {
+          lineMap.set(key, null);
+        }
       }
     });
 
@@ -126,8 +128,6 @@ class AddScript extends Component {
     description: yup.string()
         .min(3, "Must be at least 3 characters"),
     mushi: yup.string()
-        .matches(/^[\s]*:96::::54:3::58:::62::::[:\s0-9]*$/,
-            {message: "Not a valid MushiString", excludeEmptyString: true})
         .test('invalid-mushi', 'Not a valid MushiString', async (value) => await this.validateMushi(value))
   });
   initialValues = {

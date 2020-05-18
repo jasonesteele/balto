@@ -29,7 +29,6 @@ function serializeMushi(script) {
   for (var i = 0; i < stringToEncode.length; i++) {
     code = code + ':' + (stringToEncode.charCodeAt(i) + 1) + ':';
   }
-  console.log(stringToEncode);
   return code.match(/.{1,100}/g).join('\n');
 }
 
