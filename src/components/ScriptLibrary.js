@@ -30,10 +30,6 @@ class ScriptLibrary extends Component {
         (!script.description || script.description.trim().length === 0 || !script.description.toLowerCase().includes(this.state.filter.toLowerCase()));
   }
 
-  componentDidMount() {
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }
-
   render() {
     return (
         <div>

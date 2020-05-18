@@ -159,10 +159,6 @@ class AddScript extends Component {
     return true;
   }
 
-  componentDidMount() {
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }
-
   render() {
     return (
         <Container>

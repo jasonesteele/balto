@@ -426,7 +426,6 @@ class EditScript extends Component {
   }
 
   componentDidMount() {
-    ReactGA.pageview(window.location.pathname + window.location.search);
     const {match: {params}} = this.props;
     this.setState(() => {
       var script = this.props.scripts.find(it => it.id === params.scriptId)
