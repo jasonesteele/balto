@@ -22,7 +22,7 @@ function serializeMushi(script) {
             '_5=' + (it.arg1 ? it.arg1 : '')+ ':-1:' +
             '_6=' + (it.arg2 ? it.arg2 : '')+ ':-1:' +
             '_7=' + (it.arg3 ? it.arg3 : '')+ ':-1:' +
-            '_8=' + (it.arg4 ? it.arg4 : '')+ ':-1:';
+            '_8=' + (it.arg4 ? it.arg4 : '');
       })
       .join('--end--:-1:');
   var code = '';
