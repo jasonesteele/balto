@@ -97,11 +97,21 @@ function parseMushi(mushi) {
       'position': { x: parseInt(position[0]), y: parseInt(position[1]) },
       'links': links,
       'altLinks': altLinks,
+      'prevLinks': [],
       'arg1': lineMap.get('_5'),
       'arg2': lineMap.get('_6'),
       'arg3': lineMap.get('_7'),
       'arg4': lineMap.get('_8')
     }
+  });
+  // Fill in node backreferences
+  nodes.forEach(node => {
+    node.links && node.links.forEach(link => {
+      nodes.find(it => it.id === link).prevLinks.push(node.id);
+    });
+    node.altLinks && node.altLinks.forEach(link => {
+      nodes.find(it => it.id === link).prevLinks.push(node.id);
+    });
   });
   return nodes;
 }
@@ -142,6 +152,7 @@ class AddScript extends Component {
     try {
       parseMushi(mushi);
     } catch (e) {
+      console.error('error parsing MushiString', e);
       return false;
     }
     return true;

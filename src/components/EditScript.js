@@ -9,6 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import MaterialTable from "material-table";
 import Container from "@material-ui/core/Container";
 import {connect} from "react-redux";
+import Link from "@material-ui/core/Link";
 
 class NodeSummary extends Component {
   constructor(props) {
@@ -354,6 +355,38 @@ class NodeSummary extends Component {
   }
 }
 
+class NodeLinks extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+        <div>
+          {(() => {
+            switch (this.props.node.type) {
+              case 'ConditionNode':
+                return <span>
+                  {this.props.node.prevLinks && this.props.node.prevLinks.length > 0 ?
+                      <div><i>prev: </i><Link href="#">{this.props.node.prevLinks.join(', ')}</Link></div> :
+                      <span></span>}
+                  <div><i>true:</i> <Link href="#">{this.props.node.links.join(', ')}</Link></div>
+                  <div><i>false:</i> <Link href="#">{this.props.node.altLinks.join(', ')}</Link></div>
+                </span>;
+              default:
+                return <span>
+                  {this.props.node.prevLinks && this.props.node.prevLinks.length > 0 ?
+                      <div><i>prev:</i> <Link href="#">{this.props.node.prevLinks.join(', ')}</Link></div> :
+                      <span></span>}
+                  {this.props.node.links && this.props.node.links.length > 0 ?
+                      <div><i>next:</i> <Link href="#">{this.props.node.links.join(', ')}</Link></div> :
+                      <span></span>}
+                </span>;
+            }
+          })()}
+        </div>
+    )
+  }}
+
 class EditScript extends Component {
   schema = yup.object({
     title: yup.string()
@@ -482,13 +515,15 @@ class EditScript extends Component {
                                       title: 'Summary', width: '65%',
                                       render: rowData => <NodeSummary node={rowData.node}/>
                                     },
-                                    {title: 'Links', field: 'links', width: '20%'},
+                                    {
+                                      title: 'Links', width: '20%',
+                                      render: rowData => <NodeLinks node={rowData.node}/>
+                                    }
                                   ]}
                                   data={this.state.script.mushi.map(it => {
                                     return {
                                       id: it.id,
                                       type: it.type,
-                                      links: '<b>links</b>',
                                       node: it
                                     }
                                   })}
