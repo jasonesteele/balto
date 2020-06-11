@@ -1,5 +1,7 @@
 ![Node.js CI](https://github.com/jasonesteele/balto/workflows/Node.js%20CI/badge.svg)
 
+https://balto-cc93f.web.app
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
